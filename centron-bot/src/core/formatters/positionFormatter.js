@@ -1,0 +1,89 @@
+import { getUserPositions } from "../../services/positionService.js";
+import { formatMarketCap, formatTokenBalance, getFallbackTokenDetails } from "../utils/getTokenDetails.js";
+
+export async function getValidPositions(userId, walletAddress) {
+    const positions = await getUserPositions(userId, walletAddress);
+    const tokenCache = {};
+    const validPositions = [];
+    for (const pos of positions) {
+        if (!tokenCache[pos.tokenAddress]) {
+            tokenCache[pos.tokenAddress] = await getFallbackTokenDetails(pos.tokenAddress, walletAddress);
+        }
+        const tokenInfo = tokenCache[pos.tokenAddress]?.tokenInfo;
+        if (tokenInfo?.price && pos.symbol) {
+            validPositions.push({
+                ...pos,
+                tokenInfo,
+                tokenAmount: pos.totalAmount / 10 ** tokenInfo.decimals,
+            });
+        }
+    }
+
+    return { validPositions, tokenCache };
+}
+
+export async function formatPositionSummary(pos, tokenInfo, tokenAmount, suiUsdPrice) {
+    const currentValueSUI = pos.valueSUI || 0;
+    const currentValueUSD = pos.valueUSD || 0;
+    const currentPriceSUI = pos.currentPriceSUI || 0;
+    const currentPriceUSD = tokenInfo?.priceInUSD || (currentPriceSUI * suiUsdPrice);
+
+    const pnlUSD = pos.pnlUsd || 0;
+    const pnlPercent = pos.pnlPercent || 0;
+
+    const cappedPnlPercent = Math.min(Math.max(pnlPercent, -9999), 9999);
+    const pnlEmoji = pnlPercent >= 0 ? "🟩" : "🟥";
+
+    const tokenAddress = pos.tokenAddress || pos.coinType || "";
+    const tokenLine = `$${pos.symbol} - ${currentValueSUI.toFixed(2)} SUI ($${currentValueUSD.toFixed(2)})`;
+
+    // Try pos.marketCap first, only fetch if missing
+    let marketCap = parseFloat(pos?.marketCap || 0);
+
+    if (marketCap === 0) {
+        try {
+            const fallback = await getFallbackTokenDetails(tokenAddress, pos.walletAddress || "", {
+                suiUsdPrice
+            });
+            marketCap = parseFloat(fallback?.tokenInfo?.marketCap || 0);
+        } catch (err) {
+            console.error(`❌ Failed to fetch market cap for ${tokenAddress}:`, err);
+        }
+    }
+
+    let msg = `${tokenLine}\n`;
+    msg += `<code>${tokenAddress}</code>\n\n`;
+
+    msg += `• Price & MC: <b>${formatTinyPrice(currentPriceUSD)} — ${formatMarketCap(marketCap)}</b>\n`;
+
+    if (pos.avgEntrySUI > 0) {
+        const avgEntryUSD = pos.avgEntryUsd || 0;
+        msg += `• Avg Entry: <b>${formatTinyPrice(pos.avgEntrySUI)} SUI (${formatTinyPrice(avgEntryUSD)})</b>\n`;
+    }
+
+    msg += `• Balance: <b>${formatTokenBalance(pos.readableBalance)} $${pos.symbol}</b>\n`;
+
+    if (pos.avgEntrySUI > 0) {
+        const displayPnlUSD = Math.abs(pnlUSD) < 0.01 ? 0 : pnlUSD;
+        msg += `• PnL: <b>${cappedPnlPercent.toFixed(2)}% (${displayPnlUSD >= 0 ? '+' : ''}$${displayPnlUSD.toFixed(2)}) ${pnlEmoji}</b>\n\n`;
+    }
+
+    return msg;
+}
+
+function formatTinyPrice(value) {
+    if (!value || isNaN(value)) return "$0.00";
+    if (value >= 1) return `$${value.toFixed(2)}`;
+    if (value >= 0.01) return `$${value.toFixed(4)}`;
+    if (value >= 0.0001) return `$${value.toFixed(6)}`;
+    const exponent = Math.floor(Math.log10(value));
+    const subscriptDigits = Math.abs(exponent) - 1; // e.g. 1e-6 → subscript 5
+    const base = Math.round(value * Math.pow(10, subscriptDigits + 1)); // significant digits
+
+    const subscript = subscriptDigits
+        .toString()
+        .split("")
+        .map(d => "₀₁₂₃₄₅₆₇₈₉"[d])
+        .join("");
+    return `$0.0${subscript}${base}`;
+}

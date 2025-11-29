@@ -1,0 +1,48 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  centron-bot:
+    build: ./centron-bot
+    container_name: centron-bot
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./centron-bot/prisma:/app/prisma
+    expose:
+      - "3000:3000"  # internal only (used by nginx or other containers)
+    depends_on:
+      - redis
+    restart: unless-stopped
+    command: sh -c "npx prisma migrate deploy && npm start"
+
+  log-viewer:
+    build: ./logs-viewer
+    container_name: log-viewer
+    environment:
+      - CONTAINER_NAME=centron-bot
+    expose:
+      - "5000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro  # optional, if using SSL
+    depends_on:
+      - centron-bot
+      - log-viewer
+    restart: unless-stopped
+

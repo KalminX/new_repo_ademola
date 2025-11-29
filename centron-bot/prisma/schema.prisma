@@ -1,0 +1,227 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          String      @id @default(cuid())
+  telegramId  String      @unique
+  username    String?     @unique  // Add this
+  referralCode String?    @unique  // Add this (optional)
+  step        Json?
+  wallets     Wallet[]
+  limitOrders LimitOrder[]
+  dcaOrders   DcaOrder[]
+  positions   Position[]
+  slippages   Slippage[]
+  pnlRecords  PNLRecord[]
+
+  // Referrals
+  referrals          Referral[]        @relation("Referrer")      // Users they referred
+  referredBy         Referral[]        @relation("Referred")      // Who referred them
+  earningsAsReferrer ReferralEarning[] @relation("ReferralEarner")   // Earnings from referrals
+  earningsGenerated  ReferralEarning[] @relation("ReferralGenerator") // Fees they generated
+  copytradeWallets CopytradeWallet[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+
+model Wallet {
+  id         String   @id @default(cuid())
+  address    String   @unique
+  name       String?
+  seedPhrase String?
+  privateKey String?
+  userId     String
+  createdAt    DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  pnlRecords PNLRecord[]
+  referralEarnings ReferralEarning[]
+}
+
+model Referral {
+  id           String   @id @default(cuid())
+  userId       String   // Referrer's Prisma ID
+  referredId   String   // Referred user's Prisma ID
+  createdAt    DateTime @default(now())
+  
+  user         User     @relation("Referrer", fields: [userId], references: [id], onDelete: Cascade)
+  referredUser User     @relation("Referred", fields: [referredId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, referredId])
+  @@index([userId])
+  @@index([referredId])
+}
+
+
+model ReferralEarning {
+  id              String   @id @default(cuid())
+  userId          String   // Referrer's ID
+  referredUserId  String   // Who generated the fee
+  walletId        String?  // Which wallet earned it
+  tokenAddress    String?  // What token was traded
+  amount          Float    // SUI earned from commission
+  feeAmount       Float    // Original fee amount
+  commissionRate  Float    // 0.20, 0.10, or 0.05
+  transactionDigest String   @unique 
+  credited        Boolean  @default(false)
+  creditedAt      DateTime?
+  createdAt       DateTime @default(now())
+  
+  user         User   @relation("ReferralEarner", fields: [userId], references: [id], onDelete: Cascade)
+  referredUser User   @relation("ReferralGenerator", fields: [referredUserId], references: [id], onDelete: Cascade)
+  wallet       Wallet? @relation(fields: [walletId], references: [id], onDelete: SetNull)
+  
+  @@index([userId])
+  @@index([referredUserId])
+  @@index([credited])
+}
+
+
+model LimitOrder {
+  id           String   @id @default(cuid())
+  userId       String
+  walletId     String
+  address      String?
+  tokenAddress String
+  mode         String
+  suiAmount    Float?
+  suiPercentage Float?
+  slippage     Float?
+  triggerMcap  Float?
+  triggerPrice Float?
+  status       String   @default("pending")
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model DcaOrder {
+  id            String   @id @default(cuid())
+  userId        String
+  walletId      String
+  address      String?
+  tokenAddress  String
+  mode          String
+  suiAmount     Float?
+  suiPercentage Float?
+  slippage      Float?
+  intervalMinutes Int
+  durationMinutes Int?
+  duration Int?
+  interval Int?
+  maxExecutions Int?
+  executedCount Int    @default(0)
+  lastExecuted  DateTime?
+  status        String @default("pending")
+  createdAt     DateTime @default(now())
+  user          User   @relation(fields: [userId], references: [id])
+}
+
+model Position {
+  id           String   @id @default(cuid())
+  userId       String
+  walletId     String
+  tokenAddress String
+  symbol  String
+  tokenName    String?
+  decimals     Int
+  amountBought Float
+  humanAmount  Float
+  balance      Float
+  averageEntry Float
+  avgPrice     Float?
+  avgPriceSUI   Float?
+  amountInSUI Float
+  marketCap    Float?
+  spentSUI     Float?
+  lastBuySUI   Float?
+  lastBuyAmount Float?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, walletId, tokenAddress])
+}
+
+
+
+model Slippage {
+  id        String   @id @default(cuid())
+  userId    String
+  walletId  String?   // null = global
+  type      String    // "buy" or "sell"
+  value     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, walletId, type])
+}
+
+
+model PNLRecord {
+  id                String   @id @default(cuid())
+  userId            String
+  walletId          String
+  tokenAddress      String
+  tokenSymbol       String
+  tokenName         String
+  totalInvested     Float
+  totalReceived     Float
+  profitLoss        Float
+  profitLossPercent Float
+  amountSold        Float
+  percentageSold    Int?
+  isFullSell        Boolean  @default(false)
+  transactionDigest String?
+  createdAt         DateTime @default(now())
+  
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([walletId])
+  @@index([tokenAddress])
+}
+
+
+// Add to your existing schema.prisma
+
+model CopytradeWallet {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  walletAddress String
+  nickname      String?
+  isActive      Boolean  @default(true)
+  
+  // Settings
+  copyBuys         Boolean @default(true)
+  copySells        Boolean @default(true)
+  copyAmount       Float   @default(0)      // Changed default from 0.1 to 0
+  autoBuyEnabled   Boolean @default(false)  // Changed default from true to false
+  autoSellEnabled  Boolean @default(false)  // Changed default from true to false
+  slippage         Float   @default(10)
+  
+  // ADD THESE NEW FIELDS ⬇️
+  autoBuyNotifications  Boolean @default(false)  // For tracking notification state
+  autoSellNotifications Boolean @default(false)  // For tracking notification state
+  sellPercentage        Float   @default(0)      // For auto-sell percentage
+  
+  // Stats
+  totalCopied      Int     @default(0)
+  successfulCopies Int     @default(0)
+  
+  createdAt     DateTime @default(now())
+  
+  @@unique([userId, walletAddress])
+}

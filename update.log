@@ -1,0 +1,114 @@
+==============================================
+Update started at Fri Oct 24 12:03:36 CEST 2025
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+ Container nginx  Stopping
+ Container nginx  Stopped
+ Container nginx  Removing
+ Container nginx  Removed
+ Container log-viewer  Stopping
+ Container centron-bot  Stopping
+ Container log-viewer  Stopped
+ Container log-viewer  Removing
+ Container centron-bot  Stopped
+ Container centron-bot  Removing
+ Container log-viewer  Removed
+ Container centron-bot  Removed
+ Container redis  Stopping
+ Container redis  Stopped
+ Container redis  Removing
+ Container redis  Removed
+ Network apps_default  Removing
+ Network apps_default  Removed
+#1 [internal] load local bake definitions
+#1 reading from stdin 959B done
+#1 DONE 0.0s
+
+#2 [centron-bot internal] load build definition from Dockerfile
+#2 transferring dockerfile: 789B done
+#2 DONE 0.1s
+
+#3 [log-viewer internal] load build definition from Dockerfile
+#3 transferring dockerfile: 353B 0.0s done
+#3 DONE 0.1s
+
+#4 [centron-bot internal] load metadata for docker.io/library/node:20-bullseye
+#4 ...
+
+#5 [auth] library/python:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#6 [auth] library/node:pull token for registry-1.docker.io
+#6 DONE 0.0s
+
+#7 [log-viewer internal] load metadata for docker.io/library/python:3.11-alpine
+#7 ...
+
+#4 [centron-bot internal] load metadata for docker.io/library/node:20-bullseye
+#4 DONE 0.9s
+
+#7 [log-viewer internal] load metadata for docker.io/library/python:3.11-alpine
+#7 DONE 0.9s
+
+#8 [centron-bot internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [centron-bot 1/7] FROM docker.io/library/node:20-bullseye@sha256:fd16d0493915f578fe2b2bfb9d9179267076ffc899e47e4bcec9ecd42687c6e7
+#9 DONE 0.0s
+
+#10 [log-viewer internal] load .dockerignore
+#10 transferring context: 2B done
+#10 DONE 0.0s
+
+#11 [log-viewer 1/6] FROM docker.io/library/python:3.11-alpine@sha256:610ede222c1fa9675c694c99429f8d2c1b4e243f1982246da9e540eb5800ee4a
+#11 DONE 0.0s
+
+#12 [log-viewer internal] load build context
+#12 transferring context: 339B done
+#12 DONE 0.0s
+
+#13 [log-viewer 2/6] RUN apk add --no-cache sqlite
+#13 CACHED
+
+#14 [log-viewer 3/6] WORKDIR /app
+#14 CACHED
+
+#15 [log-viewer 5/6] RUN pip install --no-cache-dir -r requirements.txt
+#15 CACHED
+
+#16 [log-viewer 4/6] COPY requirements.txt ./
+#16 CACHED
+
+#17 [log-viewer 6/6] COPY . .
+#17 CACHED
+
+#18 [log-viewer] exporting to image
+#18 exporting layers done
+#18 writing image sha256:c63876078db8030f97ba7adea04093c630e71dd8d0c354bda5b87b35335f3c9f 0.0s done
+#18 naming to docker.io/library/apps-log-viewer done
+#18 DONE 0.0s
+
+#19 [log-viewer] resolving provenance for metadata file
+#19 DONE 0.0s
+
+#20 [centron-bot internal] load build context
+#20 transferring context: 5.39MB 4.9s done
+#20 DONE 5.0s
+
+#21 [centron-bot 3/7] RUN apt-get update && apt-get install -y     python3     make     g++     libcairo2-dev     libpango1.0-dev     libjpeg-dev     libgif-dev     librsvg2-dev     sqlite3  && rm -rf /var/lib/apt/lists/*
+#21 CACHED
+
+#22 [centron-bot 2/7] WORKDIR /app
+#22 CACHED
+
+#23 [centron-bot 4/7] COPY package*.json ./
+#23 CACHED
+
+#24 [centron-bot 5/7] RUN npm install --omit=dev
+#24 CACHED
+
+#25 [centron-bot 6/7] COPY . .
+
+Update finished at Fri Oct 24 12:04:00 CEST 2025
+

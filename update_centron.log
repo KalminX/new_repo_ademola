@@ -1,0 +1,227 @@
+==============================================
+Update started at Fri Oct 24 12:05:03 CEST 2025
+HEAD is now at 0145e56 feat: added new pnl cards
+From https://github.com/GOODBADBOY10/centron-bot
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+#1 [internal] load local bake definitions
+#1 reading from stdin 959B done
+#1 DONE 0.0s
+
+#2 [centron-bot internal] load build definition from Dockerfile
+#2 transferring dockerfile: 896B done
+#2 DONE 0.0s
+
+#3 [log-viewer internal] load build definition from Dockerfile
+#3 transferring dockerfile: 353B done
+#3 DONE 0.0s
+
+#4 [log-viewer internal] load metadata for docker.io/library/python:3.11-alpine
+#4 DONE 0.4s
+
+#5 [centron-bot internal] load metadata for docker.io/library/node:20-alpine
+#5 ...
+
+#6 [log-viewer internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [log-viewer 1/6] FROM docker.io/library/python:3.11-alpine@sha256:610ede222c1fa9675c694c99429f8d2c1b4e243f1982246da9e540eb5800ee4a
+#7 DONE 0.0s
+
+#8 [log-viewer internal] load build context
+#8 transferring context: 339B done
+#8 DONE 0.0s
+
+#9 [log-viewer 3/6] WORKDIR /app
+#9 CACHED
+
+#10 [log-viewer 4/6] COPY requirements.txt ./
+#10 CACHED
+
+#11 [log-viewer 5/6] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [log-viewer 2/6] RUN apk add --no-cache sqlite
+#12 CACHED
+
+#13 [log-viewer 6/6] COPY . .
+#13 CACHED
+
+#14 [log-viewer] exporting to image
+#14 exporting layers done
+#14 writing image sha256:c63876078db8030f97ba7adea04093c630e71dd8d0c354bda5b87b35335f3c9f done
+#14 naming to docker.io/library/apps-log-viewer 0.0s done
+#14 DONE 0.0s
+
+#15 [log-viewer] resolving provenance for metadata file
+#15 DONE 0.0s
+
+#5 [centron-bot internal] load metadata for docker.io/library/node:20-alpine
+#5 DONE 1.1s
+
+#16 [centron-bot internal] load .dockerignore
+#16 transferring context: 2B done
+#16 DONE 0.0s
+
+#17 [centron-bot 1/7] FROM docker.io/library/node:20-alpine@sha256:6178e78b972f79c335df281f4b7674a2d85071aae2af020ffa39f0a770265435
+#17 resolve docker.io/library/node:20-alpine@sha256:6178e78b972f79c335df281f4b7674a2d85071aae2af020ffa39f0a770265435 0.0s done
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 0B / 42.75MB 0.1s
+#17 sha256:6178e78b972f79c335df281f4b7674a2d85071aae2af020ffa39f0a770265435 7.67kB / 7.67kB done
+#17 sha256:be8d32d651b3e0c9c2b28fdc1d3888408125d703232013cff955344d052027e5 1.72kB / 1.72kB done
+#17 sha256:2b56f2779663b9e1a77bdb5235dc31f1a81e534ccab1c1b35c716a8db79eeab9 6.42kB / 6.42kB done
+#17 sha256:e74e4ed823e9560b3fe51c0cab47dbfdfc4b12453604319408ec58708fb9e720 0B / 1.26MB 0.3s
+#17 sha256:da04d522c98fe12816b2bcddf8413fca73645f8fa60f287c672f58bcc7f0fa38 0B / 444B 0.3s
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 3.15MB / 42.75MB 0.5s
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 8.39MB / 42.75MB 0.8s
+#17 sha256:e74e4ed823e9560b3fe51c0cab47dbfdfc4b12453604319408ec58708fb9e720 1.05MB / 1.26MB 0.8s
+#17 sha256:da04d522c98fe12816b2bcddf8413fca73645f8fa60f287c672f58bcc7f0fa38 444B / 444B 0.6s done
+#17 sha256:e74e4ed823e9560b3fe51c0cab47dbfdfc4b12453604319408ec58708fb9e720 1.26MB / 1.26MB 0.8s done
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 13.63MB / 42.75MB 1.0s
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 17.83MB / 42.75MB 1.2s
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 20.97MB / 42.75MB 1.3s
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 24.12MB / 42.75MB 1.5s
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 29.36MB / 42.75MB 1.8s
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 34.60MB / 42.75MB 2.0s
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 37.75MB / 42.75MB 2.1s
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 42.75MB / 42.75MB 2.3s
+#17 sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 42.75MB / 42.75MB 2.3s done
+#17 extracting sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64
+#17 ...
+
+#18 [centron-bot internal] load build context
+#18 transferring context: 5.81MB 5.1s done
+#18 DONE 5.3s
+
+#17 [centron-bot 1/7] FROM docker.io/library/node:20-alpine@sha256:6178e78b972f79c335df281f4b7674a2d85071aae2af020ffa39f0a770265435
+#17 extracting sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 5.0s
+#17 extracting sha256:60e45a9660cfaebbbac9bba98180aa28b3966b7f2462d132c46f51a1f5b25a64 6.6s done
+#17 extracting sha256:e74e4ed823e9560b3fe51c0cab47dbfdfc4b12453604319408ec58708fb9e720
+#17 extracting sha256:e74e4ed823e9560b3fe51c0cab47dbfdfc4b12453604319408ec58708fb9e720 0.2s done
+#17 extracting sha256:da04d522c98fe12816b2bcddf8413fca73645f8fa60f287c672f58bcc7f0fa38 done
+#17 DONE 10.2s
+
+#19 [centron-bot 2/7] WORKDIR /app
+#19 DONE 0.2s
+
+#20 [centron-bot 3/7] RUN apk add --no-cache     python3     make     g++     cairo-dev     pango-dev     jpeg-dev     giflib-dev     pixman-dev     build-base     sqlite
+#20 0.652 fetch https://dl-cdn.alpinelinux.org/alpine/v3.22/main/x86_64/APKINDEX.tar.gz
+#20 0.889 fetch https://dl-cdn.alpinelinux.org/alpine/v3.22/community/x86_64/APKINDEX.tar.gz
+
+Update finished at Fri Oct 24 12:05:18 CEST 2025
+
+==============================================
+Update started at Sun Oct 26 17:21:40 CET 2025
+HEAD is now at eb53fce feat: added the fnts
+From https://github.com/GOODBADBOY10/centron-bot
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+ Container nginx  Stopping
+ Container nginx  Stopped
+ Container nginx  Removing
+ Container nginx  Removed
+ Container log-viewer  Stopping
+ Container centron-bot  Stopping
+ Container log-viewer  Stopped
+ Container log-viewer  Removing
+ Container log-viewer  Removed
+ Container centron-bot  Stopped
+ Container centron-bot  Removing
+ Container centron-bot  Removed
+ Container redis  Stopping
+ Container redis  Stopped
+ Container redis  Removing
+ Container redis  Removed
+ Network apps_default  Removing
+ Network apps_default  Removed
+#1 [internal] load local bake definitions
+#1 reading from stdin 959B done
+#1 DONE 0.0s
+
+#2 [centron-bot internal] load build definition from Dockerfile
+#2 transferring dockerfile: 896B done
+#2 DONE 0.0s
+
+#3 [log-viewer internal] load build definition from Dockerfile
+#3 transferring dockerfile: 353B 0.0s done
+#3 DONE 0.0s
+
+#4 [auth] library/node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#5 [auth] library/python:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#6 [log-viewer internal] load metadata for docker.io/library/python:3.11-alpine
+#6 DONE 1.8s
+
+#7 [centron-bot internal] load metadata for docker.io/library/node:20-alpine
+#7 ...
+
+#8 [log-viewer internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [log-viewer 1/6] FROM docker.io/library/python:3.11-alpine@sha256:610ede222c1fa9675c694c99429f8d2c1b4e243f1982246da9e540eb5800ee4a
+#9 DONE 0.0s
+
+#10 [log-viewer internal] load build context
+#10 transferring context: 339B done
+#10 DONE 0.0s
+
+#11 [log-viewer 4/6] COPY requirements.txt ./
+#11 CACHED
+
+#12 [log-viewer 5/6] RUN pip install --no-cache-dir -r requirements.txt
+#12 CACHED
+
+#13 [log-viewer 2/6] RUN apk add --no-cache sqlite
+#13 CACHED
+
+#14 [log-viewer 3/6] WORKDIR /app
+#14 CACHED
+
+#15 [log-viewer 6/6] COPY . .
+#15 CACHED
+
+#16 [log-viewer] exporting to image
+#16 exporting layers done
+#16 writing image sha256:c63876078db8030f97ba7adea04093c630e71dd8d0c354bda5b87b35335f3c9f done
+#16 naming to docker.io/library/apps-log-viewer done
+#16 DONE 0.0s
+
+#17 [log-viewer] resolving provenance for metadata file
+#17 DONE 0.0s
+
+#7 [centron-bot internal] load metadata for docker.io/library/node:20-alpine
+#7 DONE 2.0s
+
+#18 [centron-bot internal] load .dockerignore
+#18 transferring context: 2B done
+#18 DONE 0.0s
+
+#19 [centron-bot 1/7] FROM docker.io/library/node:20-alpine@sha256:6178e78b972f79c335df281f4b7674a2d85071aae2af020ffa39f0a770265435
+#19 DONE 0.0s
+
+#20 [centron-bot internal] load build context
+#20 transferring context: 2.10MB 5.0s
+#20 transferring context: 4.26MB 10.0s
+#20 transferring context: 5.23MB 13.0s done
+#20 DONE 13.2s
+
+#21 [centron-bot 3/7] RUN apk add --no-cache     python3     make     g++     cairo-dev     pango-dev     jpeg-dev     giflib-dev     pixman-dev     build-base     sqlite
+#21 CACHED
+
+#22 [centron-bot 2/7] WORKDIR /app
+#22 CACHED
+
+#23 [centron-bot 4/7] COPY package*.json ./
+#23 CACHED
+
+#24 [centron-bot 5/7] RUN npm ci --omit=dev
+#24 CACHED
+
+#25 [centron-bot 6/7] COPY . .
+
+Update finished at Sun Oct 26 17:22:14 CET 2025
+
